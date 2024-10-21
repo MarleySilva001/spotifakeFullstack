@@ -1,22 +1,19 @@
-
-import Input from "../../components/input"
 import { View, StyleSheet, Text } from "react-native"
 import { LinearGradient } from "expo-linear-gradient";
 import LoginForm from "../../components/loginForm";
 import { Link } from "expo-router";
 
-const login = () => {
-    return (
+const Cadastro = () => {
+    return(
         <View style={styles.container}>
             <LinearGradient
                 colors={['#2B80FF', '#05004D']}
                 style={styles.background}
             />
             <View style={styles.loginContainer}>
-                <Text style={styles.title}>Entrar no spotifake</Text>
+                <Text style={styles.title}>Cadastrar</Text>
                 <LoginForm />
-                <Text style={styles.forgotPassword}>esqueceu a senha?</Text>
-                <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'}>Cadastre-se</Link></Text>
+                <Text style={styles.signUpPath}>Já tem uma conta? <Link href={'/login'}>Conecte-se</Link></Text>
             </View>
         </View>
     )
@@ -52,11 +49,6 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold'
     },
-     forgotPassword: {
-        color: '#006FFF',
-        fontSize: 11,
-        textDecorationLine: 'underline'
-     },
      signUpPath: {
         color: 'white',
 
@@ -64,4 +56,4 @@ const styles = StyleSheet.create({
 }
 )
 
-export default login
+export default Cadastro

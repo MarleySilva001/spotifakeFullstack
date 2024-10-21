@@ -17,14 +17,19 @@ const Input = ({ label, value, onChangeText }) => {
 const styles = StyleSheet.create({
     label: {
         fontWeight: 'bold',
-        marginBottom:3
+        marginBottom:3,
+         color: 'white'
     },
      input :{
         height: 36,
-        borderColor: '#ccc',  // Adicionando borda
-        borderWidth: 1,        // Definindo a espessura da borda
-        paddingHorizontal: 10, // Espaçamento interno no campo
-        borderRadius: 5,   
+        width: 250,
+        backgroundColor: '#1B1B1B',
+        borderColor: '#ccc',  
+        borderWidth: 1,        
+        paddingHorizontal: 6, 
+        borderRadius: 4,   
+        color: 'white',
+        fontSize: 14
      }
 })
 
