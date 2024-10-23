@@ -1,41 +1,64 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 
 const BottomBar = () => {
-    const router = useRouter()
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const isActive = (route) => pathname === route;
+
     return (
         <View style={styles.bar}>
             <LinearGradient 
-            style={styles.background}
-            colors={['transparent','black']}/>
+                style={styles.background}
+                colors={['transparent','black']}
+            />
             <Pressable 
-            style={styles.iconBox}
-            onPress={() => (router.push('/home'))}
+                style={styles.iconBox}
+                onPress={() => router.push('/home')}
             >
-            <MaterialIcons name="home-filled" size={26} color="white" />
-            <Text style={styles.label}>Home</Text>
+                <MaterialIcons 
+                    name="home-filled" 
+                    size={26} 
+                    color={isActive('/home') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
+                />
+                <Text style={[styles.label, isActive('/home') && styles.activeLabel]}>
+                    Home
+                </Text>
             </Pressable>
             <Pressable 
-            style={styles.iconBox}
-            onPress={() => (router.push('/pesquisa'))}
+                style={styles.iconBox}
+                onPress={() => router.push('/pesquisa')}
             >
-            <MaterialIcons name="search" size={26} color="white" />
-                <Text style={styles.label}>Search</Text>
+                <MaterialIcons 
+                    name="search" 
+                    size={26} 
+                    color={isActive('/pesquisa') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
+                />
+                <Text style={[styles.label, isActive('/pesquisa') && styles.activeLabel]}>
+                    Search
+                </Text>
             </Pressable>
             <Pressable 
-            style={styles.iconBox}
-            onPress={() => (router.push('/biblioteca'))}
+                style={styles.iconBox}
+                onPress={() => router.push('/biblioteca')}
             >
-            <MaterialIcons name="library-music" size={26} color="white" />
-                <Text style={styles.label}>Library</Text>
+                <MaterialIcons 
+                    name="library-music" 
+                    size={26} 
+                    color={isActive('/biblioteca') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
+                />
+                <Text style={[styles.label, isActive('/biblioteca') && styles.activeLabel]}>
+                    Library
+                </Text>
             </Pressable>
         </View>
-    )
-}
+    );
+};
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
     bar: {
         width: '100%',
         backgroundColor: 'transparent',
@@ -44,25 +67,28 @@ const styles = StyleSheet.create ({
         left: 0,
         position: 'absolute',
         flexDirection: 'row',
-
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
     },
     iconBox: {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 2,
-        width: '33%'
+        width: '33%',
     },
     label: {
-         color: 'white',
-         fontSize: 12
-    }, background: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontSize: 12,
+    },
+    activeLabel: {
+        color: 'white', 
+    },
+    background: {
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
         height: '100%',
     }
-})
+});
 
 export default BottomBar;
