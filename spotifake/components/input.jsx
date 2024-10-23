@@ -19,10 +19,11 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: 'bold',
         marginBottom:3,
-         color: 'white'
+         color: 'white',
+         fontSize: 16
     },
      input :{
-        height: 36,
+        height: 38,
         width: 250,
         backgroundColor: '#1B1B1B',
         borderColor: '#ccc',  

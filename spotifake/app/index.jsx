@@ -1,11 +1,22 @@
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image, Animated } from 'react-native'
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'expo-router';
 
 const SplashScreen = () => {
     const router = useRouter()
+    const fadeAnimation = useRef(new Animated.Value(0)).current
+
+    const fadeIn = () => {
+        Animated.timing(fadeAnimation, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+        }).start();
+    }
+
     useEffect(() =>{
+        fadeIn()
         const timer = setTimeout(() =>{
           router.push('/login')
         },3000)
@@ -17,8 +28,10 @@ const SplashScreen = () => {
                 colors={['#1F1F1F', 'black']}
                 style={styles.background}
             />
-            <Image 
-            style={styles.logo}
+            <Animated.Image 
+            style={[styles.logo, {
+                opacity: fadeAnimation
+            }]}
             source={require('../assets/images/spotifake.png')}
             />
         </View>

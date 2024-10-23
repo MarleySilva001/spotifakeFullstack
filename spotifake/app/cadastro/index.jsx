@@ -12,7 +12,7 @@ const Cadastro = () => {
             />
             <Text style={styles.title}>Cadastrar</Text>
             <CadastroForm />
-            <Text style={styles.signUpPath}>Já tem uma conta? <Link href={'/login'}>Conecte-se</Link></Text>
+            <Text style={styles.signUpPath}>Já tem uma conta? <Link href={'/login'} style={styles.link}>Conecte-se</Link></Text>
         </View>
     )
 }
@@ -38,7 +38,9 @@ const styles = StyleSheet.create({
     },
     signUpPath: {
         color: 'white',
-
+    },
+    link: {
+        color: 'blue'
     }
 }
 )

@@ -1,25 +1,36 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from "expo-router";
 
 const BottomBar = () => {
+    const router = useRouter()
     return (
         <View style={styles.bar}>
             <LinearGradient 
             style={styles.background}
             colors={['transparent','black']}/>
-            <View style={styles.iconBox}>
+            <Pressable 
+            style={styles.iconBox}
+            onPress={() => (router.push('/home'))}
+            >
             <MaterialIcons name="home-filled" size={26} color="white" />
             <Text style={styles.label}>Home</Text>
-            </View>
-            <View style={styles.iconBox}>
+            </Pressable>
+            <Pressable 
+            style={styles.iconBox}
+            onPress={() => (router.push('/pesquisa'))}
+            >
             <MaterialIcons name="search" size={26} color="white" />
                 <Text style={styles.label}>Search</Text>
-            </View>
-            <View style={styles.iconBox}>
+            </Pressable>
+            <Pressable 
+            style={styles.iconBox}
+            onPress={() => (router.push('/biblioteca'))}
+            >
             <MaterialIcons name="library-music" size={26} color="white" />
                 <Text style={styles.label}>Library</Text>
-            </View>
+            </Pressable>
         </View>
     )
 }

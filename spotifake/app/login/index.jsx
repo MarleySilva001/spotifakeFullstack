@@ -13,7 +13,7 @@ const login = () => {
             <Text style={styles.title}>Entrar no spotifake</Text>
             <LoginForm />
             <Text style={styles.forgotPassword}>esqueceu a senha?</Text>
-            <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'}>Cadastre-se</Link></Text>
+            <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'} style={styles.link}>Cadastre-se</Link></Text>
         </View>
     )
 }
@@ -44,7 +44,10 @@ const styles = StyleSheet.create({
     },
     signUpPath: {
         color: 'white',
+    },
 
+    link: {
+        color: 'blue'
     }
 }
 )
