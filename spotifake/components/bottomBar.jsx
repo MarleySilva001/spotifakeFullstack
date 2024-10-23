@@ -9,15 +9,15 @@ const BottomBar = () => {
             style={styles.background}
             colors={['transparent','black']}/>
             <View style={styles.iconBox}>
-            <MaterialIcons name="home-filled" size={40} color="white" />
+            <MaterialIcons name="home-filled" size={26} color="white" />
             <Text style={styles.label}>Home</Text>
             </View>
             <View style={styles.iconBox}>
-            <MaterialIcons name="search" size={40} color="white" />
+            <MaterialIcons name="search" size={26} color="white" />
                 <Text style={styles.label}>Search</Text>
             </View>
             <View style={styles.iconBox}>
-            <MaterialIcons name="library-music" size={40} color="white" />
+            <MaterialIcons name="library-music" size={26} color="white" />
                 <Text style={styles.label}>Library</Text>
             </View>
         </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create ({
     },
     label: {
          color: 'white',
-         fontSize: 13
+         fontSize: 12
     }, background: {
         position: 'absolute',
         left: 0,
