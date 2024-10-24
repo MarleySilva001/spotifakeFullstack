@@ -14,7 +14,7 @@ app.use(Express.json())
 //     res.send('Mensagem 2')
 // })
 
-//criarTabelas() --> usar so uma vez já que com o 'force: true' ele sempre apaga a tabela existente e cria uma nova do zero
+//criarTabelas() // --> usar so uma vez já que com o 'force: true' ele sempre apaga a tabela existente e cria uma nova do zero
 app.post('/registro', async function (req, res) {
     // verificar se todos os campos foram enviados
     try {

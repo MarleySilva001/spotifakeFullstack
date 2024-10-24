@@ -1,16 +1,16 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-const Input = ({ label, value, onChangeText, caretHidden }) => {
+const Input = ({ label, value, onChangeText, secureTextEntry }) => {
     return (
         <View>
             <Text style={styles.label}>{label}:</Text>      
                 <TextInput
                 style={styles.input}
                     placeholder={label}
-                    placeholderTextColor={'#EEEEEE'}
+                    placeholderTextColor={'rgba(255, 255, 255, 0.6)'}
                     value={value}
                     onChangeText={onChangeText}
-                    caretHidden={caretHidden}
+                    secureTextEntry={secureTextEntry || false}
                 />
         </View>
     )

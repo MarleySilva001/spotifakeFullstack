@@ -5,43 +5,7 @@ import CadastroForm from "../../components/cadastroForm";
 import { useState } from "react";
 
 const Cadastro = () => {
-    const [formData, setFormData] = useState({
-        nome: '',
-        sobrenome: '',
-        email: '',
-        dataNascimento: '',
-        senha: ''
-    })
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleButton = () => {
-        fetch('https://taskhub-s37f.onrender.com/auth/signup',
-            {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nome: formData.nome,
-                    sobrenome: formData.sobrenome,
-                    email: formData.email,
-                    dataNascimento: formData.dataNascimento,
-                    senha: formData.senha
-                })
-            })
-            .then(response => response.json())
-            .catch(error => {
-                console.error(error);
-            });
-    };
+    
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -51,7 +15,7 @@ const Cadastro = () => {
             <View style={styles.header}>
                 <Text style={styles.title}>Cadastro</Text>
             </View>
-            <CadastroForm onchangeText={handleChange} formData={formData} onPress={handleButton} />
+            <CadastroForm />
             <Text style={styles.signUpPath}>Já tem uma conta? <Link href={'/login'} style={styles.link}>Conecte-se</Link></Text>
         </View>
     )
