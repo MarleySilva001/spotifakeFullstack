@@ -48,7 +48,6 @@ const styles = StyleSheet.create ({
     },
     placeholder: {
         width: 200,
-       
     }
 })
 

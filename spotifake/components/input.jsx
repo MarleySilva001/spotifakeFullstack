@@ -7,6 +7,7 @@ const Input = ({ label, value, onChangeText, caretHidden }) => {
                 <TextInput
                 style={styles.input}
                     placeholder={label}
+                    placeholderTextColor={'#EEEEEE'}
                     value={value}
                     onChangeText={onChangeText}
                     caretHidden={caretHidden}
@@ -23,8 +24,10 @@ const styles = StyleSheet.create({
          fontSize: 16
     },
      input :{
-        height: 38,
-        width: 250,
+        height: 42,
+        minWidth: 250,
+        width: '90%',
+        maxWidth: 320,
         backgroundColor: '#1B1B1B',
         borderColor: '#ccc',  
         borderWidth: 1,        

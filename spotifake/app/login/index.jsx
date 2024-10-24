@@ -10,7 +10,7 @@ const login = () => {
                 colors={['#1F1F1F', 'black']}
                 style={styles.background}
             />
-            <Text style={styles.title}>Entrar no spotifake</Text>
+            <Text style={styles.title}>Entrar</Text>
             <LoginForm />
             <Text style={styles.forgotPassword}>esqueceu a senha?</Text>
             <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'} style={styles.link}>Cadastre-se</Link></Text>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     },
 
     link: {
-        color: 'blue'
+        color: '#0077FF'
     }
 }
 )

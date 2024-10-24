@@ -3,8 +3,8 @@ import Input from "./input"
 import Button from "./button"
 import { useRouter } from "expo-router"
 
-const LoginForm = () => {
-    const router = useRouter()
+const LoginForm = ({onPress}) => {
+    
     return (
         <View style={styles.form}>
             <Input
@@ -16,8 +16,8 @@ const LoginForm = () => {
                 caretHidden={true}
             />
             <Button 
-            title={'Entrar'}
-            onPress={()=>(router.push('/home'))}/>
+            title={'Conectar'}
+            onPress={onPress}/>
         </View>
     )
 }

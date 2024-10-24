@@ -22,8 +22,9 @@ const styles = StyleSheet.create({
         width: 250,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#358CD6',
-        borderRadius: 6
+        backgroundColor: '#0077FF',
+        borderRadius: 6,
+        marginVertical: 6
     },
     title:{
         fontSize: 16,
