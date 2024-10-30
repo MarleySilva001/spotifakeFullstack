@@ -13,7 +13,7 @@ const BottomBar = () => {
         <View style={styles.bar}>
             <LinearGradient 
                 style={styles.background}
-                colors={['transparent','black']}
+                colors={['transparent', 'rgba(1, 1, 1, 0.8)','black']}
             />
             <Pressable 
                 style={styles.iconBox}

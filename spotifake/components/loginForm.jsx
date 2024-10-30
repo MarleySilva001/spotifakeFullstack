@@ -3,14 +3,17 @@ import Input from "./input"
 import Button from "./button"
 import { useRouter } from "expo-router"
 import { useState } from "react"
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const LoginForm = () => {
+    const user = {email: 'admin', senha: 'admin'}
+    const router = useRouter()
+    const [showPassword, setShowPassword] = useState(true)
     const [formData, setFormData] = useState({
         email: '',
         senha: ''
     })
 
-    const router = useRouter()
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -22,6 +25,10 @@ const LoginForm = () => {
     const handleButton = async () => {
         if (!formData.email || !formData.senha ) {
             alert('Preencha todos os campos');
+            return;
+        }
+        if (formData.email !== user.email || formData.senha !== user.senha) {
+            alert('Email ou senha incorretos');
             return;
         }
     console.log(JSON.stringify(formData))
@@ -57,8 +64,15 @@ const LoginForm = () => {
                 label={'senha'}
                 value={formData.senha}
                 onChangeText={(value) => handleInputChange('senha', value)}
-                secureTextEntry={true}
+                secureTextEntry={showPassword}
             />
+             <Pressable onPress={() => setShowPassword(!showPassword)}>
+                {showPassword ? (
+                    <Ionicons name="eye-off-sharp" size={24} color="gray" />
+                ) : (
+                    <Ionicons name="eye" size={24} color="gray" />
+                )}
+            </Pressable>
             <Button 
             title={'Conectar'}
             onPress={handleButton}/>
