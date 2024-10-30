@@ -33,8 +33,7 @@ const CadastroForm = () => {
             alert('Senha incorreta');
             return; 
         }
-    console.log(JSON.stringify(formData))
-        /* try {
+         try {
             const response = await fetch('http://localhost:8000/registro/', {
                 method: 'POST',
                 headers: {
@@ -47,13 +46,15 @@ const CadastroForm = () => {
             if (!response.ok) {
                 throw new Error(`Erro HTTP! Status: ${response.status}`);
             }
+            if( response.ok) {
+                router.push('/home')
+            }
     
-            const data = await response.json();
-            console.log('Sucesso:', data);
         } catch (error) {
             console.error('Erro:', error);
-        } */
-        router.push('/home')
+            return
+        } 
+       
     };
 
     return(

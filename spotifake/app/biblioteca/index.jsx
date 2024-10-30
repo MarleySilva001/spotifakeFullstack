@@ -54,13 +54,16 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         height: '100%',
+        width: '100%',
         marginTop: 80,
     },
     flatListContent: {
         paddingBottom: 90
     },
     itemContainer: {
-        width:420,
+        minWidth: 300,
+        width: '100%',
+        maxWidth:420,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

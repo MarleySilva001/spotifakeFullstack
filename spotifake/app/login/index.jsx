@@ -1,9 +1,10 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { LinearGradient } from "expo-linear-gradient";
 import LoginForm from "../../components/loginForm";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const login = () => {
+    const router = useRouter()
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -16,6 +17,7 @@ const login = () => {
             <LoginForm />
             <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'} style={styles.link}>Cadastre-se</Link></Text>
             <TouchableOpacity 
+            onPress={() => router.push('/home')}
             activeOpacity={0.5}
             style={styles.passwordButton}>
             <Text style={styles.forgotPassword}>sem senha</Text>

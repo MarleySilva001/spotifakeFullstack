@@ -27,12 +27,7 @@ const LoginForm = () => {
             alert('Preencha todos os campos');
             return;
         }
-        if (formData.email !== user.email || formData.senha !== user.senha) {
-            alert('Email ou senha incorretos');
-            return;
-        }
-    console.log(JSON.stringify(formData))
-        /* try {
+         try {
             const response = await fetch('http://localhost:8000/login/', {
                 method: 'POST',
                 headers: {
@@ -42,16 +37,21 @@ const LoginForm = () => {
                 body: JSON.stringify(formData)
             });
     
-            if (!response.ok) {
-                throw new Error(`Erro HTTP! Status: ${response.status}`);
+            console.log(response)
+            if (response.status === 404) {
+                alert('Email não encontrado');
+                return
             }
+            if (response.status === 403){
+                alert('Senha incorreta');
+                return
+            }
+            router.push('/home')
     
-            const data = await response.json();
-            console.log('Sucesso:', data);
         } catch (error) {
             console.error('Erro:', error);
-        } */
-        router.push('/home')
+        } 
+        
     };
     return (
         <View style={styles.form}>
