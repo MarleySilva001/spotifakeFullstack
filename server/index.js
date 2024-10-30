@@ -2,9 +2,11 @@ import Express from 'express';
 import { User, criarTabelas } from './db.js'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import cors from 'cors'
 
 const app = Express()
 app.use(Express.json())
+app.use(cors())
 
 // app.get('/pegar', function (req, res) {
 //     res.send('enviar esta mensagem')
@@ -37,7 +39,7 @@ app.post('/registro', async function (req, res) {
             senha: senhaSegura,
             dataNascimento: dataNascimento,
         })
-        res.status(201).send('ok usuario criado')
+        res.status(200).send('ok, usuario criado')
     } catch (erro) {
         console.log(erro)
     }
@@ -56,7 +58,7 @@ app.post('/login', async function (req, res) {
 
         const usuario = await User.findOne({ where: { email: email } })
         if (!usuario) {
-            res.send('este usuario não está cadastrado')
+            res.status(404).send('este usuario não está cadastrado')
             return
         }
 
@@ -64,7 +66,7 @@ app.post('/login', async function (req, res) {
 
         const senhaCorreta = bcryptjs.compareSync(senha, usuario.senha)
         if(!senhaCorreta) {
-            res.send('senha incorreta')
+            res.status(403).send('senha incorreta')
             return
         }
 // criar eum token de autenticação
@@ -84,7 +86,7 @@ app.post('/login', async function (req, res) {
 
         // devolver a resposta com o token  
 
-        res.send({msg: 'voce foi logado', token: token})
+        res.status(200).send({msg: 'voce foi logado', token: token})
         
 } catch (erro) {
         console.log(erro)
