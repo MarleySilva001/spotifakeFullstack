@@ -34,7 +34,7 @@ const CadastroForm = () => {
             return; 
         }
          try {
-            const response = await fetch('http://localhost:8000/registro/', {
+            const response = await fetch('http://localhost:8000/autenticacao/registro/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
