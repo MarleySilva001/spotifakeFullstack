@@ -36,7 +36,11 @@ const User = sequelize.define('user', {
         type: Sequelize.DataTypes.ENUM('ativo', 'inativo'),
         allowNull: false,
         defaultValue: 'inativo'
-    }
+    },
+    foto_perfil: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: true,
+    },
 })
 
 const criarTabelas = () => {

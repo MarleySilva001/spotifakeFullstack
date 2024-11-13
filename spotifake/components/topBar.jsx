@@ -1,18 +1,21 @@
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Link } from "expo-router";
 
 const TopBar = ({ title, icon }) => {
 
     return (
         <View style={styles.bar}>
-            <Image
-                style={styles.img}
-                source={require('../assets/images/user.png')} />
-                <Text style={styles.title}>{title}</Text>
-                <View style={styles.icon}>
-                    {icon}
-                </View>
-                
+            <Link href={'/perfil'}>
+                <Image
+                    style={styles.img}
+                    source={require('../assets/images/user.png')} />
+            </Link>
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.icon}>
+                {icon}
+            </View>
+
         </View>
     );
 };
