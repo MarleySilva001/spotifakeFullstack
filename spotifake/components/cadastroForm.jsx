@@ -42,12 +42,12 @@ const CadastroForm = () => {
                 },
                 body: JSON.stringify(formData)
             });
-    
+            console.log(response)
             if (!response.ok) {
                 throw new Error(`Erro HTTP! Status: ${response.status}`);
             }
             if( response.ok) {
-                router.push('/home')
+                router.push('/login')
             }
     
         } catch (error) {
