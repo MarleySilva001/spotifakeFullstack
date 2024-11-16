@@ -1,15 +1,19 @@
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
+import { useContext } from "react";
+import { IdContext } from "../scripts/idContext";
 
 const TopBar = ({ title, icon }) => {
+
+    const { userInfo } = useContext(IdContext)
 
     return (
         <View style={styles.bar}>
             <Link href={'/perfil'}>
                 <Image
                     style={styles.img}
-                    source={require('../assets/images/user.png')} />
+                    source={{ uri: userInfo.foto}} />
             </Link>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.icon}>
