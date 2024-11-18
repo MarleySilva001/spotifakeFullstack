@@ -2,18 +2,18 @@ import { Pressable, Text, View, StyleSheet } from "react-native"
 import Input from "./input"
 import Button from "./button"
 import { useRouter } from "expo-router"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { IdContext } from "../scripts/idContext"
 
 const LoginForm = () => {
-    const user = {email: 'admin', senha: 'admin'}
+    const {pegarUsuario} = useContext(IdContext)
     const router = useRouter()
     const [showPassword, setShowPassword] = useState(true)
     const [formData, setFormData] = useState({
         email: '',
         senha: ''
     })
-
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -46,6 +46,7 @@ const LoginForm = () => {
                 alert('Senha incorreta');
                 return
             }
+            pegarUsuario(formData.email)
             router.push('/home')
     
         } catch (error) {

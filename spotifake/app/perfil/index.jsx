@@ -10,7 +10,7 @@ import { IdContext } from "../../scripts/idContext";
 
 
 const Perfil = () => {
-    const { userInfo, setUserInfo, desconectarUser} = useContext(IdContext)
+    const { userInfo, setUserInfo, desconectarUser } = useContext(IdContext)
     const [image, setImage] = useState(userInfo.foto)
     const [visibilidadeModal, setVisibilidadeModal] = useState(false)
     const [novaSenha, setNovaSenha] = useState('')
@@ -18,7 +18,7 @@ const Perfil = () => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const route = useRouter()
 
-    const pegarImage = async () => {
+    const getImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.mediaTypes,
             allowsEditing: true,
@@ -27,45 +27,77 @@ const Perfil = () => {
         });
         if (!result.canceled) {
             setImage(result.assets[0].uri);
-            handleSendImage(result.assets[0].uri)
+            handleSetImage(result.assets[0].uri)
         }
     }
 
-    const handleSendImage = async (url) => {
+    const handleSetImage = async (url) => {
         try {
             const data = {
                 "file": url,
                 "upload_preset": 'ml_default',
-            }
+            };
             const res = await fetch('https://api.cloudinary.com/v1_1/duo8nbu2l/upload', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            })
+            });
             const result = await res.json();
-            console.log(result)
-            setUserInfo({...userInfo, foto: result.url})
-            //await saveNewImageURLonBackend(result)
+            setUserInfo({ ...userInfo, foto: result.url });
+            saveImageInBackEnd(result.url)
         } catch (error) {
-            console.err(error)
+            console.err(error);
+        }
+    };
+
+    const saveImageInBackEnd = async (url) => {
+        try {
+            const response = await fetch(`http://localhost:8000/usuarios/${userInfo.email}/salvar_foto`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ foto: url })
+            });
+
+        } catch (erro) {
+            console.log(erro);
+            return;
         }
     }
 
-    const changePassword = async() => {
-        if ( novaSenha.length < 3 ) {
-            alert('A senha deve ter pelo menos 3 caracteres')
-            return
-        }
-        if( novaSenha !== confirmarNovaSenha) {
-            alert('As senhas não coincidem!')
-            return
-        }
+    const fecharModal = () => {
         setNovaSenha('')
         setConfirmarNovaSenha('')
         setSecureTextEntry(true)
         setVisibilidadeModal(!visibilidadeModal)
+    }
+
+    const changePassword = async () => {
+        if (novaSenha.length < 3) {
+            alert('A senha deve ter pelo menos 3 caracteres')
+            return
+        }
+        if (novaSenha == confirmarNovaSenha) {
+            alert('As senhas não coincidem!')
+            return
+        }
+        try {
+            const resposta = await fetch(`http://localhost:8000/usuarios/${userInfo.email}/nova_senha`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ senha: novaSenha })
+            });
+            fecharModal
+        } catch (error) {
+            console.error('ERROR:', error)
+        }
     }
 
     const desconectarConta = () => {
@@ -78,16 +110,16 @@ const Perfil = () => {
             <Pressable onPress={() => route.back()} style={styles.back}>
                 <AntDesign name="left" size={28} color="white" />
             </Pressable>
-            <Pressable onPress={pegarImage}>
+            <Pressable onPress={getImage}>
                 <Image
                     style={styles.foto}
                     source={image} />
             </Pressable>
             <Text style={styles.name}>
-                nome
+                {userInfo.nome}
             </Text>
             <Text style={styles.email}>
-                nome@gmail.com
+                {userInfo.email}
             </Text>
             <View style={styles.center}>
                 <Button title={'mudar senha'} onPress={() => setVisibilidadeModal(true)} />
@@ -95,12 +127,11 @@ const Perfil = () => {
             </View>
             <Modal
                 animationType="slide"
+                transparent='true'
                 visible={visibilidadeModal}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setVisibilidadeModal(!visibilidadeModal);
-                }}>
-                <View style={styles.container}>
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modalContainer}>
                     <View style={styles.modalView}>
                         <Text style={styles.title}>Alterar a senha</Text>
                         <Input
@@ -132,7 +163,7 @@ const Perfil = () => {
                             <Text style={styles.color}>Enviar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => setVisibilidadeModal(!visibilidadeModal)}
+                            onPress={fecharModal}
                             style={styles.button} activeOpacity={0.8}
                         >
                             <Text style={styles.color}>Cancel</Text>
@@ -183,21 +214,19 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
-    modalView: {
+    modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#2A2A2A',
-        marginHorizontal: 20,
+        backgroundColor: "rgba(0,0,0, 0.3)",
+    },
+    modalView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#2f2f2f',
+        width: '90%',
+        padding: 16,
         borderRadius: 12,
-        padding: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
         elevation: 10,
     },
     showPassword: {
@@ -210,7 +239,7 @@ const styles = StyleSheet.create({
         minWidth: 250,
         width: '90%',
         maxWidth: 320,
-        backgroundColor: '#0056E6',
+        backgroundColor: '#0077FF',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 6,
