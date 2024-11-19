@@ -45,6 +45,7 @@ const Perfil = () => {
                 body: JSON.stringify(data)
             });
             const result = await res.json();
+            console.log(result.url)
             setUserInfo({ ...userInfo, foto: result.url });
             saveImageInBackEnd(result.url)
         } catch (error) {
@@ -54,7 +55,7 @@ const Perfil = () => {
 
     const saveImageInBackEnd = async (url) => {
         try {
-            const response = await fetch(`http://localhost:8000/usuarios/${userInfo.email}/salvar_foto`, {
+            const response = await fetch(`http://localhost:8000/usuario/${userInfo.email}/salvar_foto`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -62,7 +63,9 @@ const Perfil = () => {
                 },
                 body: JSON.stringify({ foto: url })
             });
-
+            if(response.status === 404) {
+                alert('erro no email')
+            }
         } catch (erro) {
             console.log(erro);
             return;
@@ -81,12 +84,12 @@ const Perfil = () => {
             alert('A senha deve ter pelo menos 3 caracteres')
             return
         }
-        if (novaSenha == confirmarNovaSenha) {
+        if (novaSenha !== confirmarNovaSenha) {
             alert('As senhas não coincidem!')
             return
         }
         try {
-            const resposta = await fetch(`http://localhost:8000/usuarios/${userInfo.email}/nova_senha`, {
+            const resposta = await fetch(`http://localhost:8000/usuario/${userInfo.email}/nova_senha`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -94,7 +97,7 @@ const Perfil = () => {
                 },
                 body: JSON.stringify({ senha: novaSenha })
             });
-            fecharModal
+            fecharModal()
         } catch (error) {
             console.error('ERROR:', error)
         }
@@ -113,7 +116,7 @@ const Perfil = () => {
             <Pressable onPress={getImage}>
                 <Image
                     style={styles.foto}
-                    source={image} />
+                    source={{ uri : image}} />
             </Pressable>
             <Text style={styles.name}>
                 {userInfo.nome}
@@ -184,8 +187,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#1F1F1F'
     },
     foto: {
-        width: 140,
-        height: 140,
+        width: 125,
+        height: 125,
         borderRadius: 80,
         marginTop: 80
     },

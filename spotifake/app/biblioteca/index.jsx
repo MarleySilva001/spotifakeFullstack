@@ -11,7 +11,7 @@ const Item = ({nome, source, tipo}) => {
             source={{ uri : source}}
             />
             <View style={styles.info}>
-            <Text style={ styles.p}>{nome}</Text>
+            <Text style={ styles.nome}>{nome}</Text>
             <Text style={ styles.tipo}>{tipo}</Text>
             </View>
         </View>
@@ -20,7 +20,10 @@ const Item = ({nome, source, tipo}) => {
 
 const DATA = [
     {id: '1', tipo: 'artista', nome:'Travis Scott', img:'https://i.scdn.co/image/ab6761610000e5eb19c2790744c792d05570bb71'},
-    {id: '2', tipo: 'playlist', nome:'musicas favoritas', img:'https://thisis-images.spotifycdn.com/37i9dQZF1DZ06evO0vGf4I-default.jpg'}
+    {id: '2', tipo: 'artista', nome:'Frank Ocean', img:'https://upload.wikimedia.org/wikipedia/commons/e/e3/Frank_Ocean_2022_Blonded.jpg'},
+    {id: '3', tipo: 'artista', nome:'Kendrick Lamar', img:'https://i.scdn.co/image/ab6761610000e5eb437b9e2a82505b3d93ff1022'},
+    {id: '4', tipo: 'playlist', nome:'musicas favoritas', img:'https://thisis-images.spotifycdn.com/37i9dQZF1DZ06evO0vGf4I-default.jpg'},
+    {id: '5', tipo: 'playlist', nome:'hip-hop 2010', img:'https://static.vecteezy.com/ti/vetor-gratis/t1/6470700-de-hip-hop-gratis-vetor.jpg'}
 ]
 
 const Biblioteca = () => {
@@ -68,23 +71,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 16,
-        marginBottom:6
+        marginBottom:14
     },
     img: {
-        width: 64,
-        height: 64
+        width: 60,
+        height: 60
     },
     info: {
         width: "90%",
         maxWidth: 240
     },
-    p: {
-        color: 'white',
-        fontSize: 16
-    },
-    tipo: {
+    nome: {
         color: 'white',
         fontSize: 14,
+        fontWeight:'bold'
+    },
+    tipo: {
+        color: 'rgba(255,255,255,0.9)',
+        fontSize: 12,
     }
 })
 

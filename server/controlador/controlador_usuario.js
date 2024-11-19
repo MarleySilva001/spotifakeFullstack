@@ -32,7 +32,7 @@ const salvar_foto = async (req, res) => {
             res.status(404).send('usuario não encontrado')
             return
         }
-        await usuario.update({ foto });
+        await usuario.update({ foto_perfil : foto });
         res.status(200).send('foto salva')
     } catch(error) {
         console.log(error)
@@ -48,6 +48,7 @@ const nova_senha = async(req,res) => {
             res.status(400).send('o campo deve ser preenchido')
             return
         }
+
         const usuario = await User.findOne({ where: { email: email } })
 
         if (!usuario) {

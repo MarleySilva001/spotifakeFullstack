@@ -2,9 +2,23 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { LinearGradient } from "expo-linear-gradient";
 import LoginForm from "../../components/loginForm";
 import { Link, useRouter } from "expo-router";
+import { useContext } from "react";
+import { IdContext } from "../../scripts/idContext";
 
 const login = () => {
     const router = useRouter()
+    const { userInfo, setUserInfo } = useContext(IdContext)
+
+    const semSenha = () => {
+        setUserInfo({
+            ...userInfo,
+            nome: 'admin',
+            email: 'admin@gmail.com',
+            foto: "https://res.cloudinary.com/duo8nbu2l/image/upload/v1732039695/bkuozj0eb4iefrsbjoda.jpg"
+        })
+        router.push('/home')
+    }
+
     return (
         <View style={styles.container}>
             <LinearGradient
@@ -12,15 +26,15 @@ const login = () => {
                 style={styles.background}
             />
             <View style={styles.header}>
-            <Text style={styles.title}>Entrar</Text>
+                <Text style={styles.title}>Entrar</Text>
             </View>
             <LoginForm />
             <Text style={styles.signUpPath}>Não tem uma conta? <Link href={'/cadastro'} style={styles.link}>Cadastre-se</Link></Text>
-            <TouchableOpacity 
-            onPress={() => router.push('/home')}
-            activeOpacity={0.5}
-            style={styles.passwordButton}>
-            <Text style={styles.forgotPassword}>sem senha</Text>
+            <TouchableOpacity
+                onPress={semSenha}
+                activeOpacity={0.5}
+                style={styles.passwordButton}>
+                <Text style={styles.forgotPassword}>sem senha</Text>
             </TouchableOpacity>
         </View>
     )
@@ -53,7 +67,7 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold'
     },
-    passwordButton:{
+    passwordButton: {
         backgroundColor: 'white',
         width: 90,
         height: 24,
@@ -65,7 +79,7 @@ const styles = StyleSheet.create({
     forgotPassword: {
         color: 'back',
         fontSize: 10,
-        },
+    },
     signUpPath: {
         color: 'white',
         marginTop: 6

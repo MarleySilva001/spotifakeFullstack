@@ -5,6 +5,6 @@ const rotas_usuarios = Express.Router()
 
 rotas_usuarios.get('/:email', pegar_usuario)
 rotas_usuarios.post('/:email/salvar_foto', salvar_foto)
-rotas_usuarios.post('/:email/novasenha', nova_senha)
+rotas_usuarios.post('/:email/nova_senha', nova_senha)
 
 export { rotas_usuarios }
