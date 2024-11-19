@@ -20,14 +20,14 @@ const Perfil = () => {
 
     const getImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.mediaTypes,
+            mediaTypes: ImagePicker.MediaType,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
         if (!result.canceled) {
             setImage(result.assets[0].uri);
-            handleSetImage(result.assets[0].uri)
+           handleSetImage(result.assets[0].uri)
         }
     }
 
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     foto: {
         width: 140,
         height: 140,
-        borderRadius: '100%',
+        borderRadius: 80,
         marginTop: 80
     },
     name: {
