@@ -27,7 +27,7 @@ const Perfil = () => {
         });
         if (!result.canceled) {
             setImage(result.assets[0].uri);
-           handleSetImage(result.assets[0].uri)
+            handleSetImage(result.assets[0].uri)
         }
     }
 
@@ -63,7 +63,7 @@ const Perfil = () => {
                 },
                 body: JSON.stringify({ foto: url })
             });
-            if(response.status === 404) {
+            if (response.status === 404) {
                 alert('erro no email')
             }
         } catch (erro) {
@@ -89,8 +89,8 @@ const Perfil = () => {
             return
         }
         try {
-            const resposta = await fetch(`http://localhost:8000/usuario/${userInfo.email}/nova_senha`, {
-                method: 'POST',
+            const resposta = await fetch(`http://localhost:8000/autenticacao/${userInfo.email}/nova_senha`, {
+                method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
@@ -108,6 +108,23 @@ const Perfil = () => {
         route.push('/login')
     }
 
+    const excluirConta = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/usuario/${userInfo.email}/deletar_usuario`, {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            if (response.ok) {
+                desconectarConta()
+            }
+        } catch (error) {
+            console.error('ERROR:', error)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Pressable onPress={() => route.back()} style={styles.back}>
@@ -116,7 +133,7 @@ const Perfil = () => {
             <Pressable onPress={getImage}>
                 <Image
                     style={styles.foto}
-                    source={{ uri : image}} />
+                    source={{ uri: image }} />
             </Pressable>
             <Text style={styles.name}>
                 {userInfo.nome}
@@ -127,6 +144,7 @@ const Perfil = () => {
             <View style={styles.center}>
                 <Button title={'mudar senha'} onPress={() => setVisibilidadeModal(true)} />
                 <Button title={'Desconectar'} onPress={desconectarConta} />
+                <Button title={'Apagar conta'} onPress={excluirConta} />
             </View>
             <Modal
                 animationType="slide"
