@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         gap: 40,
         padding: 10,
-        paddingTop: 20
+        paddingTop: 8
     },
     img: {
         width: 34,

@@ -1,35 +1,46 @@
-import React, { useRef } from "react";
-import { Animated, FlatList, Image, Text, View, StyleSheet } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, FlatList, Image, Text, View, StyleSheet, Pressable } from "react-native";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import BottomBar from "../../components/bottomBar";
 
 const Artista = () => {
     const scrollY = useRef(new Animated.Value(0)).current;
 
     const headerOpacity = scrollY.interpolate({
-        inputRange: [100, 150], 
-        outputRange: [0, 1], 
-        extrapolate: "clamp", 
+        inputRange: [195, 210],
+        outputRange: [0, 1],
+        extrapolate: "clamp",
     });
 
-    const songs = [
-        { id: "1", title: "Song 1" },
-        { id: "2", title: "Song 2" },
-        { id: "3", title: "Song 3" },
-    ];
+    const { id } = useLocalSearchParams();
+    const [artista, setArtista] = useState([])
+    const [artistaAlbuns, setArtistaAlbuns] = useState([])
+    const route = useRouter()
 
-    const albums = [
-        { id: "1", title: "Album 1" },
-        { id: "2", title: "Album 2" },
-        { id: "3", title: "Album 3" },
-    ];
+    useEffect(() => {
+        fetch(`http://localhost:8000/artista/${id}`)
+            .then((resposta) => resposta.json())
+            .then((dados) => setArtista(dados))
+            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+    }, [])
+
+    useEffect(() => {
+        fetch(`http://localhost:8000/artista/${id}/albums`)
+            .then((resposta) => resposta.json())
+            .then((dados) => { setArtistaAlbuns(dados); console.log(dados) })
+            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+    }, [])
+
 
     return (
         <View style={styles.container}>
-            {/* Top Bar animada */}
             <Animated.View style={[styles.topBar, { opacity: headerOpacity }]}>
-                <Text style={styles.topBarText}>Minha Top Bar</Text>
+                <Text style={styles.topBarText}>{artista.nome}</Text>
             </Animated.View>
-
-            {/* Conteúdo rolável */}
+            <Pressable onPress={() => route.back()} style={styles.back}>
+                <AntDesign name="left" size={26} color="white" />
+            </Pressable>
             <Animated.ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
@@ -40,50 +51,51 @@ const Artista = () => {
                 )}
                 scrollEventThrottle={16}
             >
-                {/* Imagem do artista */}
-                <Image
-                    source={{ uri: "https://via.placeholder.com/300" }}
-                    style={styles.artistImage}
-                />
-                <Text style={styles.artistName}>Nome do Artista</Text>
-
-                {/* Seção "Mais Ouvidas" */}
-                <Text style={styles.sectionTitle}>Mais Ouvidas</Text>
+                <View style={styles.topImage}>
+                    <Image
+                        source={{ uri: artista.imageUrl }}
+                        style={styles.artistImage}
+                    />
+                    <Text style={styles.artistName}>{artista.nome}</Text>
+                </View>
+                <Text style={styles.sectionTitle}>Popular</Text>
                 <FlatList
-                    data={songs}
+                    data={artistaAlbuns.Musicas}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => (
                         <View style={styles.item}>
-                            <Text style={styles.itemText}>{index + 1}{item.title}</Text>
+                            <Text style={styles.itemText}>{index + 1}{item.titulo}</Text>
                         </View>
                     )}
                     contentContainerStyle={styles.listContainer}
                 />
-
-                {/* Seção "Discografia" */}
                 <Text style={styles.sectionTitle}>Discografia</Text>
                 <FlatList
-                    data={albums}
+                    data={artista.Albums}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <View style={styles.item}>
-                            <Text style={styles.itemText}>{item.title}</Text>
+                            <Image
+                                source={{ uri: item.coverImageUrl }}
+                                style={styles.itemImage}
+                            />
+                            <View>
+                                <Text style={styles.itemText}>{item.title}</Text>
+                                <Text style={styles.itemYear}>{item.releaseYear}</Text>
+                            </View>
                         </View>
                     )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.listContainer}
                 />
-
-                {/* Seção "Bio" */}
                 <View style={styles.bioContainer}>
-                    <Text style={styles.sectionTitle}>Bio</Text>
+                    <Text style={styles.sectionTitle}>Sobre</Text>
                     <Text style={styles.bioText}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-                        lacinia odio vitae vestibulum vestibulum.
+                        {artista.bio}.
                     </Text>
                 </View>
             </Animated.ScrollView>
+            <BottomBar />
         </View>
     );
 };
@@ -99,32 +111,47 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        backgroundColor: "#6200ea",
+        backgroundColor: "#1F1F1F",
         justifyContent: "center",
         alignItems: "center",
         zIndex: 10,
     },
     topBarText: {
-        color: "#fff",
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: "bold",
+        textAlign: "center",
+        color: 'white'
+    },
+    back: {
+        position: 'absolute',
+        top: 16,
+        left: 8,
+        zIndex: 10
     },
     scrollView: {
         marginTop: 0,
+        paddingBottom: 90
     },
     scrollContent: {
         paddingBottom: 20,
     },
+    topImage: {
+        height: 270
+    },
     artistImage: {
         width: "100%",
-        height: 300,
+        height: "100%",
     },
     artistName: {
-        fontSize: 24,
+        position: 'absolute',
+        fontSize: 52,
         fontWeight: "bold",
-        textAlign: "center",
+        textAlign: 'left',
+        paddingHorizontal: 12,
+        lineHeight: 48,
         marginVertical: 10,
-        color: 'white'
+        color: 'white',
+        bottom: 0
     },
     sectionTitle: {
         fontSize: 20,
@@ -137,21 +164,35 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     item: {
-        backgroundColor: "#f4f4f4",
-        padding: 15,
+        backgroundColor: "#1F1F1F",
+        padding: 6,
         marginRight: 10,
         borderRadius: 5,
-        marginBottom: 4
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center'
     },
     itemText: {
         fontSize: 16,
-        color: 'white'
+        color: 'white',
+        fontWeight: '500'
+    },
+    itemYear: {
+        fontSize: 14,
+        color: 'white',
+        fontWeight: '300'
+    },
+    itemImage: {
+        width: 70,
+        height: 70,
+        borderRadius: 4,
+
     },
     bioContainer: {
-        padding: 15,
+        padding: 10,
     },
     bioText: {
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 24,
         color: 'white'
     },

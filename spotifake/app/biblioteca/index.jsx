@@ -29,7 +29,7 @@ const DATA = [
 const Biblioteca = () => {
     return (
         <View style={styles.container}>
-           <TopBar title={'Biblioteca'}  icon={<AntDesign name="plus" size={28} color="white" />}/>
+           <TopBar title={'Biblioteca'}  icon2={<AntDesign name="plus" size={28} color="white" />}/>
             <FlatList 
             data={DATA}
             showsVerticalScrollIndicator={false}

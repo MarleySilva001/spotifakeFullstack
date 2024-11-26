@@ -7,6 +7,7 @@ import Button from "../../components/button";
 import Input from "../../components/input";
 import { useRouter } from "expo-router";
 import { IdContext } from "../../scripts/idContext";
+import BottomBar from "../../components/bottomBar";
 
 
 const Perfil = () => {
@@ -128,7 +129,7 @@ const Perfil = () => {
     return (
         <View style={styles.container}>
             <Pressable onPress={() => route.back()} style={styles.back}>
-                <AntDesign name="left" size={28} color="white" />
+                <AntDesign name="left" size={26} color="white" />
             </Pressable>
             <Pressable onPress={getImage}>
                 <Image
@@ -192,6 +193,7 @@ const Perfil = () => {
                     </View>
                 </View>
             </Modal>
+            <BottomBar />
         </View>
 
     )
@@ -273,8 +275,8 @@ const styles = StyleSheet.create({
     },
     back: {
         position: 'absolute',
-        top: 20,
-        left: 10,
+        top: 16,
+        left: 8,
     }
 })
 
