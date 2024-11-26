@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#1F1F1F'
     },
     foto: {
-        width: 125,
-        height: 125,
+        width: 140,
+        height: 140,
         borderRadius: 80,
         marginTop: 80
     },

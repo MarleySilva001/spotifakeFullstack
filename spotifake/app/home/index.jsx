@@ -43,7 +43,7 @@ const Home = () => {
     return (
         <View style={styles.container}>
             <TopBar title={'Spotifake'} icon={null} />
-            <ScrollView style={styles.feed}>
+            <ScrollView style={styles.feed} showsVerticalScrollIndicator={false}>
                 {DATA.map((section, index) => (
                     <View key={index} style={styles.sectionContainer}>
                         <Text style={styles.header}>{section.title}</Text>
@@ -95,16 +95,16 @@ const styles = StyleSheet.create({
     },
     row: {
         paddingHorizontal: 20,
-        gap: 6,
+        gap: 10,
     },
     img: {
-        width: 125,
-        height: 125,
+        width: 130,
+        height: 130,
         marginBottom: 4
     },
     itemContainer: {
         alignItems: 'center',
-        maxWidth: 125,
+        maxWidth: 130,
         backgroundColor: '#252525',
         borderRadius: 8,
     },

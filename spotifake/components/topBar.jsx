@@ -1,26 +1,27 @@
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, Animated } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useContext } from "react";
 import { IdContext } from "../scripts/idContext";
 
-const TopBar = ({ title, icon }) => {
+const TopBar = ({ icon, title, icon2, style2 }) => {
 
     const { userInfo } = useContext(IdContext)
 
     return (
-        <View style={styles.bar}>
-            <Link href={'/perfil'}>
-                <Image
-                    style={styles.img}
-                    source={{ uri: userInfo.foto}} />
-            </Link>
+        <Animated.View style={[styles.bar, {style2}]}>
+            {!icon ?
+                <Pressable onPress={() => router.push('/perfil')}>
+                    <Image
+                        style={styles.img}
+                        source={{ uri: userInfo.foto }} />
+                </Pressable> : icon}
             <Text style={styles.title}>{title}</Text>
             <View style={styles.icon}>
-                {icon}
+                {icon2}
             </View>
 
-        </View>
+        </Animated.View>
     );
 };
 
