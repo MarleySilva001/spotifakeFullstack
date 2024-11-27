@@ -10,12 +10,24 @@ INSERT INTO artists (nome, bio, "imageUrl", "createdAt", "updatedAt") VALUES
 
 INSERT INTO albums (title, "releaseYear", "coverImageUrl", "createdAt", "updatedAt", artista_id) VALUES
 ('Rodeo', 2015, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544132/f0glxmvij294m93yomvh.jpg', NOW(), NOW(), 1),
-('Astroworld', 2018, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544175/v9hzkkejulok8nc5f54k.jpg', NOW(), NOW(), 1),
+('ASTROWORLD', 2018, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544175/v9hzkkejulok8nc5f54k.jpg', NOW(), NOW(), 1),
 ('DAMN.', 2017, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544233/mkcawppweinq4oblcid7.jpg', NOW(), NOW(), 2),
 ('GNX', 2024, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544258/pdneszlm4szralrnbwo3.jpg', NOW(), NOW(), 2),
 ('Channel Orange', 2012, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544283/qepdf7m8w3ah5lxzkyma.jpg', NOW(), NOW(), 3),
 ('Blonde', 2016, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544316/fm6kdr8qmxve2ein5yqs.jpg', NOW(), NOW(), 3),
-('Graduation', 2007, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544371/z3w5ogecsbbrsjdixbsu.jpg', NOW(), NOW(), 4);
+('Graduation', 2007, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732544371/z3w5ogecsbbrsjdixbsu.jpg', NOW(), NOW(), 4),
+('UTOPIA', 2023, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732742726/bciulpekqvbunijxmdmw.jpg', NOW(), NOW(), 1),
+('JACKBOYS', 2019, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732742815/pxoylyl2enxuhu25r8ju.jpg', NOW(), NOW(), 1),
+('Huncho Jack,Jack Huncho', 2017, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732742973/kvgribhd4da94p0e3g1s.jpg', NOW(), NOW(), 1),
+('Birds In The Trap Sing McKnight', 2016, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743089/n7bw7lli458dhhzy6ial.jpg', NOW(), NOW(), 1),
+('DAYS BEFORE RODEO', 2014, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743175/x1wq4swjawncpraxzxlf.jpg', NOW(), NOW(), 1),
+('Section.80', 2011, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743346/q7uxne8ls6sc80qocbht.jpg', NOW(), NOW(), 2),
+('good kid,m.A.A.d city', 2012, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743431/su6grbqgffflmote6jaq.jpg', NOW(), NOW(), 2),
+('To Pimp A Butterfly', 2015, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743507/f8gvmh9yq21ljvedc4gb.jpg', NOW(), NOW(), 2),
+('untitled unmastered.', 2016, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743596/edepgx3dmrbwf893jx6z.jpg', NOW(), NOW(), 2),
+('Black Panther The Album Music From And Inspired By', 2018, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743754/b87gfqoaht6veip74smz.jpg', NOW(), NOW(), 2),
+('Mr.Morales & The Big Steppers', 2022, 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732743854/wdn3xeipwumc0ucssdiq.png', NOW(), NOW(), 2);
+
 
 INSERT INTO musicas (titulo, duracao, "fileUrl", "createdAt", "updatedAt", artista_id, album_id) VALUES
 ('90210', 369, 'https://example.com/vaimalandra.mp3', NOW(), NOW(), 1, 1),
@@ -45,5 +57,5 @@ INSERT INTO musicas (titulo, duracao, "fileUrl", "createdAt", "updatedAt", artis
 ('Stronger', 311, 'https://example.com/ceudaboca.mp3', NOW(), NOW(), 4, 7),
 ('I Wonder', 243, 'https://example.com/realfantasia.mp3', NOW(), NOW(), 4, 7),
 ('Flashing Lights', 237, 'https://example.com/eva.mp3', NOW(), NOW(), 4, 7),
-("Can't Tell Me Nothing", 271, 'https://example.com/vemmorena.mp3', NOW(), NOW(), 4, 7);
+('Cant Tell Me Nothing', 271, 'https://example.com/vemmorena.mp3', NOW(), NOW(), 4, 7);
  

@@ -7,7 +7,7 @@ const BottomBar = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const isActive = (route) => pathname === route;
+    const isActive = (router) => pathname === router;
 
     return (
         <View style={styles.bar}>
@@ -21,7 +21,7 @@ const BottomBar = () => {
             >
                 <MaterialIcons 
                     name="home-filled" 
-                    size={26} 
+                    size={24} 
                     color={isActive('/home') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
                 />
                 <Text style={[styles.label, isActive('/home') && styles.activeLabel]}>
@@ -34,7 +34,7 @@ const BottomBar = () => {
             >
                 <MaterialIcons 
                     name="search" 
-                    size={26} 
+                    size={24} 
                     color={isActive('/pesquisa') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
                 />
                 <Text style={[styles.label, isActive('/pesquisa') && styles.activeLabel]}>
@@ -47,7 +47,7 @@ const BottomBar = () => {
             >
                 <MaterialIcons 
                     name="library-music" 
-                    size={26} 
+                    size={24} 
                     color={isActive('/biblioteca') ? 'white' : 'rgba(255, 255, 255, 0.6)'} 
                 />
                 <Text style={[styles.label, isActive('/biblioteca') && styles.activeLabel]}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: 'rgba(255, 255, 255, 0.6)',
-        fontSize: 12,
+        fontSize: 11,
     },
     activeLabel: {
         color: 'white', 

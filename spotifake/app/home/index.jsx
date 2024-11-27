@@ -83,7 +83,7 @@ const Home = () => {
                 style={[styles.img, { borderRadius: 4 }]}
                 source={{ uri: item.coverImageUrl }}
             />
-            <View style={styles.textContainer}>
+            <View style={styles.itemContainer}>
                 <Text style={styles.album}>{item.title}</Text>
                 {artistasAlbum[item.artista_id] && (
                     <Text style={styles.autor}>
@@ -103,8 +103,8 @@ const Home = () => {
                 style={[styles.img, { borderRadius: 80 }]}
                 source={{ uri: item.imageUrl }}
             />
-            <View style={styles.textContainer}>
-                <Text style={styles.album}>{item.nome}</Text>
+            <View style={styles.itemContainer}>
+                <Text style={styles.artista}>{item.nome}</Text>
             </View>
         </Pressable>
     );
@@ -139,14 +139,14 @@ const Home = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1F1F1F',
+        backgroundColor: '#121212',
     },
     sectionContainer: {
         marginVertical: 10,
     },
     feed: {
-        marginTop: 90,
-        paddingBottom: 90
+        marginTop: 70,
+        paddingBottom: 80
     },
     row: {
         paddingHorizontal: 20,
@@ -159,8 +159,7 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         alignItems: 'center',
-        maxWidth: 130,
-        backgroundColor: '#252525',
+        width: 130,
         borderRadius: 8,
     },
     itemText: {
@@ -178,13 +177,23 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 13,
         height: 20,
+        width:'100%',
+        textAlign: 'left'
+    },
+    artista: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 13,
+        height: 20,
+        width:'100%',
         textAlign: 'center'
     },
     autor: {
-        color: "rgba(255,255,255,0.9)",
+        color: "rgba(255,255,255,0.8)",
         fontSize: 12,
-        textAlign: 'center',
-        marginBottom: 6
+        textAlign: 'left',
+        marginBottom: 6,
+        width:'100%'
     },
 });
 

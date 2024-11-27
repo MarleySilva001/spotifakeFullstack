@@ -17,7 +17,7 @@ const Perfil = () => {
     const [novaSenha, setNovaSenha] = useState('')
     const [confirmarNovaSenha, setConfirmarNovaSenha] = useState('')
     const [secureTextEntry, setSecureTextEntry] = useState(true)
-    const route = useRouter()
+    const router = useRouter()
 
     const getImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -106,7 +106,7 @@ const Perfil = () => {
 
     const desconectarConta = () => {
         desconectarUser()
-        route.push('/login')
+        router.push('/login')
     }
 
     const excluirConta = async () => {
@@ -128,7 +128,7 @@ const Perfil = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => route.back()} style={styles.back}>
+            <Pressable onPress={() => router.back()} style={styles.back}>
                 <AntDesign name="left" size={26} color="white" />
             </Pressable>
             <Pressable onPress={getImage}>
@@ -168,16 +168,19 @@ const Perfil = () => {
                             onChangeText={setConfirmarNovaSenha}
                             secureTextEntry={secureTextEntry}
                         />
-                        <View style={styles.showPassword}>
-                            <Pressable onPress={() => setSecureTextEntry(!secureTextEntry)}>
-                                {secureTextEntry ? (
+                        <Pressable onPress={() => setSecureTextEntry(!secureTextEntry)} style={styles.showPassword}>
+                            {secureTextEntry ? (
+                                <>
                                     <Ionicons name="eye-off-sharp" size={24} color="white" />
-                                ) : (
+                                    <Text style={styles.color}>mostrar senha</Text>
+                                </>
+                            ) : (
+                                <>
                                     <Ionicons name="eye" size={24} color="white" />
-                                )}
-                            </Pressable>
-                            <Text style={styles.color}>mostrar senha</Text>
-                        </View>
+                                    <Text style={styles.color}>ocultar senha</Text>
+                                </>
+                            )}
+                        </Pressable>
                         <TouchableOpacity
                             onPress={changePassword}
                             style={styles.button} activeOpacity={0.8}
@@ -204,7 +207,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        backgroundColor: '#1F1F1F'
+        backgroundColor: '#121212'
     },
     foto: {
         width: 140,
@@ -241,12 +244,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0, 0.3)",
+        backgroundColor: "rgba(0,0,0, 0.5)",
     },
     modalView: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#2f2f2f',
+        backgroundColor: '#121212',
         width: '90%',
         padding: 16,
         borderRadius: 12,
@@ -255,7 +258,10 @@ const styles = StyleSheet.create({
     showPassword: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '90%',
         marginTop: 10,
+        gap: 8
     },
     button: {
         height: 36,

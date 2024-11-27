@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, FlatList, Image, Text, View, StyleSheet, Pressable } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import BottomBar from "../../components/bottomBar";
+import { LinearGradient } from "expo-linear-gradient";
+
 
 const Artista = () => {
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -16,7 +18,7 @@ const Artista = () => {
     const { id } = useLocalSearchParams();
     const [artista, setArtista] = useState([])
     const [artistaAlbuns, setArtistaAlbuns] = useState([])
-    const route = useRouter()
+    const router = useRouter()
 
     useEffect(() => {
         fetch(`http://localhost:8000/artista/${id}`)
@@ -28,9 +30,21 @@ const Artista = () => {
     useEffect(() => {
         fetch(`http://localhost:8000/artista/${id}/albums`)
             .then((resposta) => resposta.json())
-            .then((dados) => { setArtistaAlbuns(dados); console.log(dados) })
+            .then((dados) => {
+                const allSongs = dados.reduce((acumulador, album) => {
+                    const songsImg = album.Musicas.map(musica => ({
+                        musica,
+                        imagem: album.coverImageUrl
+                    }));
+                    return acumulador.concat(songsImg);
+                }, []);
+                const shuffleSongs = allSongs.sort(() => Math.random() - 0.5)
+                const sliceSongs = shuffleSongs.slice(0, 5)
+                setArtistaAlbuns(sliceSongs);
+                console.log(sliceSongs)
+            })
             .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
-    }, [])
+    }, [id])
 
 
     return (
@@ -38,7 +52,7 @@ const Artista = () => {
             <Animated.View style={[styles.topBar, { opacity: headerOpacity }]}>
                 <Text style={styles.topBarText}>{artista.nome}</Text>
             </Animated.View>
-            <Pressable onPress={() => route.back()} style={styles.back}>
+            <Pressable onPress={() => router.back()} style={styles.back}>
                 <AntDesign name="left" size={26} color="white" />
             </Pressable>
             <Animated.ScrollView
@@ -57,14 +71,22 @@ const Artista = () => {
                         style={styles.artistImage}
                     />
                     <Text style={styles.artistName}>{artista.nome}</Text>
+                    <LinearGradient
+                        colors={['transparent','#121212' ]}
+                        style={styles.background}
+                    />
                 </View>
-                <Text style={styles.sectionTitle}>Popular</Text>
+                <Text style={styles.sectionTitle}>Músicas Populares</Text>
                 <FlatList
-                    data={artistaAlbuns.Musicas}
+                    data={artistaAlbuns}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => (
                         <View style={styles.item}>
-                            <Text style={styles.itemText}>{index + 1}{item.titulo}</Text>
+                            <Text style={styles.itemIndex}>{index + 1} </Text>
+                            <Image
+                                style={styles.itemCover}
+                                source={{ uri: item.imagem }} />
+                            <Text style={styles.itemText}> {item.musica.titulo}</Text>
                         </View>
                     )}
                     contentContainerStyle={styles.listContainer}
@@ -74,7 +96,8 @@ const Artista = () => {
                     data={artista.Albums}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
-                        <View style={styles.item}>
+                        <Pressable style={styles.item}
+                        onPress={() => router.push(`/album/${item.id}`)} >
                             <Image
                                 source={{ uri: item.coverImageUrl }}
                                 style={styles.itemImage}
@@ -83,7 +106,7 @@ const Artista = () => {
                                 <Text style={styles.itemText}>{item.title}</Text>
                                 <Text style={styles.itemYear}>{item.releaseYear}</Text>
                             </View>
-                        </View>
+                        </Pressable>
                     )}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.listContainer}
@@ -103,7 +126,7 @@ const Artista = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1F1F1F'
+        backgroundColor: '#121212'
     },
     topBar: {
         position: "absolute",
@@ -111,7 +134,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        backgroundColor: "#1F1F1F",
+        backgroundColor: "#080808",
         justifyContent: "center",
         alignItems: "center",
         zIndex: 10,
@@ -138,6 +161,13 @@ const styles = StyleSheet.create({
     topImage: {
         height: 270
     },
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: -1,
+        height: 220,
+    },
     artistImage: {
         width: "100%",
         height: "100%",
@@ -151,7 +181,8 @@ const styles = StyleSheet.create({
         lineHeight: 48,
         marginVertical: 10,
         color: 'white',
-        bottom: 0
+        bottom: 0,
+        zIndex: 10
     },
     sectionTitle: {
         fontSize: 20,
@@ -164,18 +195,23 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     item: {
-        backgroundColor: "#1F1F1F",
+        backgroundColor: "#121212",
         padding: 6,
         marginRight: 10,
         borderRadius: 5,
         flexDirection: 'row',
-        gap: 10,
+        gap: 8,
         alignItems: 'center'
     },
     itemText: {
         fontSize: 16,
         color: 'white',
         fontWeight: '500'
+    },
+    itemIndex: {
+        fontSize: 14,
+        color: 'white',
+        fontWeight: '400'
     },
     itemYear: {
         fontSize: 14,
@@ -186,7 +222,10 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 4,
-
+    },
+    itemCover: {
+        width: 45,
+        height: 45,
     },
     bioContainer: {
         padding: 10,

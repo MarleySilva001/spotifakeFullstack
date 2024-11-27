@@ -1,41 +1,121 @@
-import React, { useRef } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, FlatList, Image, Text, View, StyleSheet, Pressable } from "react-native";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import BottomBar from "../../components/bottomBar";
+import { LinearGradient } from "expo-linear-gradient";
 
-const App = () => {
-  // Criando uma referência animada para capturar o deslocamento do ScrollView
+
+const Album = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  // Mapeando o deslocamento para a opacidade (de 0 a 1)
   const headerOpacity = scrollY.interpolate({
-    inputRange: [300, 450], // 0 a 100 pixels de rolagem
-    outputRange: [0, 1], // Opacidade de 1 (visível) a 0 (transparente)
-    extrapolate: 'clamp', // Impede valores fora do intervalo
+    inputRange: [195, 210],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
   });
+
+  const { id } = useLocalSearchParams();
+  const [album, setAlbum] = useState([])
+  const [musicas, setMusicas] = useState([])
+  const [artista, setArtista] = useState([])
+  const router = useRouter()
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/album/${id}`)
+      .then((resposta) => resposta.json())
+      .then((dados) => { setAlbum(dados); })
+      .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+  }, [id])
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/album/${id}/musicas`)
+      .then((resposta) => resposta.json())
+      .then((dados) => { setMusicas(dados) })
+      .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+  }, [id])
+  useEffect(() => {
+    fetch(`http://localhost:8000/artista/${album.artista_id}`)
+      .then((resposta) => resposta.json())
+      .then((dados) => { setArtista(dados); console.log(dados) })
+      .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+  }, [album])
+
 
   return (
     <View style={styles.container}>
-      {/* Top Bar animada */}
       <Animated.View style={[styles.topBar, { opacity: headerOpacity }]}>
-        <Text style={styles.topBarText}>Minha Top Bar</Text>
+        <Text style={styles.topBarText}>{album.title}</Text>
       </Animated.View>
-
-      {/* Conteúdo com rolagem */}
+      <Pressable onPress={() => router.back()} style={styles.back}>
+        <AntDesign name="left" size={26} color="white" />
+      </Pressable>
       <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false } // Necessário para animar a opacidade
+          { useNativeDriver: false }
         )}
-        scrollEventThrottle={16} // Controle da frequência dos eventos de scroll
+        scrollEventThrottle={16}
       >
-        <Text style={styles.contentText}>Conteúdo Rolável</Text>
-        {[...Array(30)].map((_, index) => (
-          <View key={index} style={styles.item}>
-            <Text style={styles.itemText}>Item {index + 1}</Text>
+        <View style={styles.topImage}>
+          <Image
+            source={{ uri: album.coverImageUrl }}
+            style={styles.albumImage}
+          />
+          <Text style={styles.albumName}>{album.title}</Text>
+          <LinearGradient
+            colors={['#303030', '#121212']}
+            style={styles.background}
+          />
+        </View>
+        <View style={styles.play}>
+          <View>
+            <Pressable style={styles.artistaInfo} onPress={() => router.push(`/artista/${artista.id}`)}>
+              <Image
+                style={styles.artistaImage}
+                source={{ uri: artista.imageUrl }} />
+              <Text style={styles.artistaNome}>{artista.nome}</Text>
+            </Pressable>
+            <Text style={styles.albumInfo}>{album.releaseYear}</Text>
           </View>
-        ))}
+          <AntDesign name="play" size={40} color="#0077FF" />
+        </View>
+        <FlatList
+          data={musicas}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View style={styles.item}>
+              <Text style={styles.itemIndex}>{index + 1} </Text>
+              <Text style={styles.itemText}> {item.titulo}</Text>
+            </View>
+          )}
+          contentContainerStyle={styles.listContainer}
+        />
+        <Text style={styles.sectionTitle}>Mais de {artista.nome}</Text>
+        <FlatList
+          data={artista.Albums}
+          horizontal
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Pressable style={styles.itemA} onPress={() => router.push(`/album/${item.id}`)}>
+              <Image
+                source={{ uri: item.coverImageUrl }}
+                style={styles.itemAImage}
+              />
+              <View>
+                <Text style={styles.itemAText}>{item.title}</Text>
+                <Text style={styles.itemAYear}>{item.releaseYear}</Text>
+              </View>
+            </Pressable>
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        />
       </Animated.ScrollView>
+      <BottomBar />
     </View>
   );
 };
@@ -43,44 +123,150 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#121212'
   },
   topBar: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 60,
-    backgroundColor: '#6200ea',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#080808",
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 10,
   },
   topBarText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: 'white'
+  },
+  back: {
+    position: 'absolute',
+    top: 16,
+    left: 8,
+    zIndex: 10
   },
   scrollView: {
-    marginTop: 60, // Ajustar para que o conteúdo não fique atrás da Top Bar
+    marginTop: 0,
+    paddingBottom: 90
   },
   scrollContent: {
-    paddingVertical: 10,
+    paddingBottom: 20,
   },
-  contentText: {
+  topImage: {
+    height: 270,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: -1,
+    top: -1,
+    height: '100%',
+  },
+  albumImage: {
+    width: 175,
+    height: 175,
+    borderRadius: 4,
+    zIndex: 10,
+  },
+  albumName: {
+    position: 'absolute',
+    fontSize: 30,
+    width: '100%',
+    fontWeight: "bold",
+    textAlign: 'left',
+    paddingHorizontal: 12,
+    lineHeight: 48,
+    marginVertical: 10,
+    color: 'white',
+    bottom: 0,
+    zIndex: 10
+  },
+  play: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 14
+  },
+  artistaInfo: {
+    flexDirection: 'row',
+    gap: 6,
+    marginBottom: 3
+  },
+  artistaImage:{
+    width: 20,
+    height: 20,
+    borderRadius: 100
+  },
+  artistaNome: {
+    color: 'white'
+  },
+  albumInfo: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  sectionTitle: {
     fontSize: 20,
-    textAlign: 'center',
-    marginBottom: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginVertical: 10,
+    color: 'white'
+  },
+  listContainer: {
+    paddingLeft: 10,
   },
   item: {
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f4f4f4',
-    marginBottom: 5,
+    padding: 6,
+    marginRight: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center'
+  },
+  itemA: {
+    padding: 4,
+    borderRadius: 4,
+    gap: 4,
+    alignItems: 'center'
   },
   itemText: {
     fontSize: 16,
+    color: 'white',
+    fontWeight: '500'
+  },
+  itemAText: {
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '500',
+    width: 120,
+    textAlign: 'left'
+  },
+  itemIndex: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: '400'
+  },
+  itemAYear: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: '300',
+    width: '100%',
+    textAlign: 'left'
+  },
+  itemAImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 4,
+  },
+  itemCover: {
+    width: 45,
+    height: 45,
   },
 });
 
-export default App;
+export default Album;

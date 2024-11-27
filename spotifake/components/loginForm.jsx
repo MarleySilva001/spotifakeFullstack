@@ -67,11 +67,17 @@ const LoginForm = () => {
                 onChangeText={(value) => handleInputChange('senha', value)}
                 secureTextEntry={showPassword}
             />
-             <Pressable onPress={() => setShowPassword(!showPassword)}>
+             <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
                 {showPassword ? (
-                    <Ionicons name="eye-off-sharp" size={24} color="gray" />
+                     <>
+                     <Ionicons name="eye-off-sharp" size={24} color="white" />
+                     <Text style={styles.color}>mostrar senha</Text>
+                 </>
                 ) : (
-                    <Ionicons name="eye" size={24} color="gray" />
+                    <>
+                    <Ionicons name="eye" size={24} color="white" />
+                    <Text style={styles.color}>ocultar senha</Text>
+                </>
                 )}
             </Pressable>
             <Button 
@@ -83,8 +89,19 @@ const LoginForm = () => {
 
 const styles = StyleSheet.create({
     form: {
-        gap: 16
-    }
+        gap: 7
+    },
+    color: {
+        color: 'white',
+        textAlign: 'center',
+    },
+    showPassword: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '90%',
+        gap: 8
+    },
 })
 
 export default LoginForm
