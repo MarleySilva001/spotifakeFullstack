@@ -81,13 +81,13 @@ const Artista = () => {
                     data={artistaAlbuns}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => (
-                        <View style={styles.item}>
+                        <Pressable onPress={() => router.push(`/musica/${item.musica.id}`)} style={[styles.item, {zIndex: 20}]}>
                             <Text style={styles.itemIndex}>{index + 1} </Text>
                             <Image
                                 style={styles.itemCover}
                                 source={{ uri: item.imagem }} />
                             <Text style={styles.itemText}> {item.musica.titulo}</Text>
-                        </View>
+                        </Pressable >
                     )}
                     contentContainerStyle={styles.listContainer}
                 />

@@ -87,10 +87,10 @@ const Album = () => {
           data={musicas}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
-            <View style={styles.item}>
+            <Pressable onPress={() => router.push(`/musica/${item.id}`)} style={styles.item}>
               <Text style={styles.itemIndex}>{index + 1} </Text>
               <Text style={styles.itemText}> {item.titulo}</Text>
-            </View>
+            </Pressable>
           )}
           contentContainerStyle={styles.listContainer}
         />
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   itemA: {
     padding: 4,
     borderRadius: 4,
-    gap: 4,
+    gap: 2,
     alignItems: 'center'
   },
   itemText: {
@@ -249,7 +249,9 @@ const styles = StyleSheet.create({
   itemIndex: {
     fontSize: 14,
     color: 'white',
-    fontWeight: '400'
+    fontWeight: '400',
+    width: 16,
+    textAlign: 'center'
   },
   itemAYear: {
     fontSize: 14,

@@ -1,11 +1,11 @@
 INSERT INTO artists (nome, bio, "imageUrl", "createdAt", "updatedAt") VALUES
-('Travis Scott', ' Rapper, cantor, compositor e produtor musical norte-americano. Conhecido por seu estilo único que mistura rap, trap e hip-hop com elementos psicodélicos e melódicos', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538167/yohniuegvcrwsdmldnuu.jpg', NOW(), NOW()),
-('kendrick Lamar', ' Rapper, compositor e produtor musical norte-americano. Conhecido por sua habilidade lírica, narrativas complexas e abordagens temáticas profundas. Vencedor de 17 prêmios Grammy.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538245/dgvvm7mfsziqtf41kmtx.jpg', NOW(), NOW()),
-('Frank Ocean', 'Cantor, compositor, produtor e empresário. Conhecido por sua abordagem única ao R&B, soul e hip-hop, bem como por suas letras introspectivas e poéticas.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538303/cdzckbnntiomy67cla0a.jpg', NOW(), NOW()),
-('Kanye West', 'Rapper, produtor musical, designer de moda e empresário norte-americano. Famoso por sua inovação artística, controvérsias públicas e contribuições significativas à música e à moda.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538808/g7gzbzyu7iwgrzuoe9d7.jpg', NOW(), NOW()),
-('Metro Boomin', 'Cantor, compositor, produtor e empresário. Conhecido por sua abordagem única ao R&B, soul e hip-hop, bem como por suas letras introspectivas e poéticas.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538914/uvcmruzbsi275fzspbwe.jpg', NOW(), NOW()),
-('J. Cole', 'Cantor, compositor, produtor e empresário. Conhecido por sua abordagem única ao R&B, soul e hip-hop, bem como por suas letras introspectivas e poéticas.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538999/keedclbzg5nxwbatsii8.jpg', NOW(), NOW()),
-('Drake', 'Cantor, compositor, produtor e empresário. Conhecido por sua abordagem única ao R&B, soul e hip-hop, bem como por suas letras introspectivas e poéticas.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538981/dtjmng8h9ou0isqt1c3s.jpg', NOW(), NOW());
+('Travis Scott', ' Travis Scott é um rapper, cantor, compositor e produtor musical norte-americano. Conhecido por seu estilo único que mistura rap, trap e hip-hop com elementos psicodélicos e melódicos.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538167/yohniuegvcrwsdmldnuu.jpg', NOW(), NOW()),
+('kendrick Lamar', ' Kendrick Lamar é rapper, compositor e produtor musical norte-americano. Conhecido por sua habilidade lírica, narrativas complexas e abordagens temáticas profundas. Vencedor de 17 prêmios Grammy.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538245/dgvvm7mfsziqtf41kmtx.jpg', NOW(), NOW()),
+('Frank Ocean', 'Frank Ocean é um cantor, compositor, produtor e empresário. Conhecido por sua abordagem única ao R&B, soul e hip-hop, bem como por suas letras introspectivas e poéticas.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538303/cdzckbnntiomy67cla0a.jpg', NOW(), NOW()),
+('Kanye West', 'Kanye West é um rapper, produtor musical, designer de moda e empresário norte-americano. Famoso por sua inovação artística, controvérsias públicas e contribuições significativas à música e à moda.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538808/g7gzbzyu7iwgrzuoe9d7.jpg', NOW(), NOW()),
+('Metro Boomin', 'Metro Boomin é um produtor musical, beatmaker, compositor e DJ americano. É famoso por seu estilo de produção distintivo, que combina batidas pesadas e atmosféricas, sintetizadores envolventes e uma ênfase em baixos profundos.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538914/uvcmruzbsi275fzspbwe.jpg', NOW(), NOW()),
+('J. Cole', 'J. Cole é um rapper e produtor norte-americano nascido na Alemanha. É um dos rappers mais respeitados e influentes da sua geração, conhecido por vários aspectos que o destacam tanto como artista quanto como produtor.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538999/keedclbzg5nxwbatsii8.jpg', NOW(), NOW()),
+('Drake', 'Drake é um rapper, cantor, compositor, produtor musical, ator e empresário canadense. Reconhecido como um dos artistas mais influentes e bem-sucedidos da música moderna, sendo conhecido por diversos aspectos que o tornam uma figura central na música pop, rap e R&B.', 'https://res.cloudinary.com/duo8nbu2l/image/upload/v1732538981/dtjmng8h9ou0isqt1c3s.jpg', NOW(), NOW());
 
 
 INSERT INTO albums (title, "releaseYear", "coverImageUrl", "createdAt", "updatedAt", artista_id) VALUES
@@ -30,12 +30,30 @@ INSERT INTO albums (title, "releaseYear", "coverImageUrl", "createdAt", "updated
 
 
 INSERT INTO musicas (titulo, duracao, "fileUrl", "createdAt", "updatedAt", artista_id, album_id) VALUES
+('Pornography', 231, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('Oh My Dis Side', 351, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('3500', 461, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('Wasted', 235, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
 ('90210', 369, 'https://example.com/vaimalandra.mp3', NOW(), NOW(), 1, 1),
-('Apple Pie', 219, 'https://example.com/machika.mp3', NOW(), NOW(), 1, 1),
+('Pray 4 Love', 307, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('Nightcrawler', 321, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('Piss On Your Grave', 166, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
 ('Antidote', 263, 'https://example.com/indecente.mp3', NOW(), NOW(), 1, 1),
-('Nightcrawler', 322, 'https://example.com/simounao.mp3', NOW(), NOW(), 1, 1),
+('Impossible', 242, 'https://example.com/indecente.mp3', NOW(), NOW(), 1, 1),
+('Maria Im Drunk', 349, 'https://example.com/indecente.mp3', NOW(), NOW(), 1, 1),
+('Flyng High', 208, 'https://example.com/indecente.mp3', NOW(), NOW(), 1, 1),
+(' Can Tell', 235, 'https://example.com/indecente.mp3', NOW(), NOW(), 1, 1),
+('Apple Pie', 219, 'https://example.com/machika.mp3', NOW(), NOW(), 1, 1),
+('Ok Alright', 417, 'https://example.com/machika.mp3', NOW(), NOW(), 1, 1),
+('Never Catch Me', 176, 'https://example.com/machika.mp3', NOW(), NOW(), 1, 1),
+('STARGAZING', 270, 'https://example.com/loco.mp3', NOW(), NOW(), 1, 2),
+('CAROUSEL', 180, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
+('SICKO MODE', 312, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
+('R.I.P SCREW', 185, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
+('STOP TRYING TO BE GOD', 338, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
+('NO BYSTANDERS', 218, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
+('SKELETONS', 145, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
 ('ASTROTHUNDER', 143, 'https://example.com/nasuacara.mp3', NOW(), NOW(), 1, 2),
-('CAROUSEL', 181, 'https://example.com/megusta.mp3', NOW(), NOW(), 1, 2),
 ('BUTTERFLY EFFECT', 191, 'https://example.com/girlfromrio.mp3', NOW(), NOW(), 1, 2),
 ('HOUSTONFORNICATION', 218, 'https://example.com/loco.mp3', NOW(), NOW(), 1, 2),
 ('DNA.', 185, 'https://example.com/topreocupada.mp3', NOW(), NOW(), 2, 3),
