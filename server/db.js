@@ -3,12 +3,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const sequelize = new Sequelize(
-    process.env.DBNAME,// //nome do database
-    process.env.USERNAME,  // usuario do servidor
-    process.env.PASSWORD,  // senha do servidor
+    'spotifake',//process.env.DBNAME,// //nome do database
+    'postgres',//process.env.USERNAME,  // usuario do servidor
+    'postgres',//process.env.PASSWORD,  // senha do servidor
     {
-        host: process.env.HOST, // endereço do servidor
-        port: process.env.PORT,  // porta onde o esta sendo rodado
+        host: 'localhost',//process.env.HOST, // endereço do servidor
+        port: 5432,//process.env.PORT,  // porta onde o esta sendo rodado
         dialect: 'postgres' // tipo de sgbd
     }
 )

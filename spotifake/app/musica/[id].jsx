@@ -14,6 +14,8 @@ const Musica = () => {
     const [artista, setArtista] = useState([])
     const router = useRouter()
     const [pause, setPause] = useState(false)
+    const [duracao, setDuracao] = useState(null)
+    const [currentTime, setCurrentTime] = useState(0);
 
     useEffect(() => {
         fetch(`http://localhost:8000/musica/${id}`)
@@ -23,26 +25,65 @@ const Musica = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`http://localhost:8000/album/${musica.album_id}`)
-            .then((resposta) => resposta.json())
-            .then((dados) => { setAlbum(dados) })
-            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
-    }, [musica])
+        if (musica.album_id) {
+            fetch(`http://localhost:8000/album/${musica.album_id}`)
+                .then((resposta) => resposta.json())
+                .then((dados) => { setAlbum(dados) })
+                .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+        }
+    }, [musica.album_id])
     useEffect(() => {
-        fetch(`http://localhost:8000/artista/${musica.artista_id}`)
-            .then((resposta) => resposta.json())
-            .then((dados) => { setArtista(dados) })
-            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+        if (musica.artista_id) {
+            fetch(`http://localhost:8000/artista/${musica.artista_id}`)
+                .then((resposta) => resposta.json())
+                .then((dados) => { setArtista(dados) })
+                .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
+        }
     }, [musica])
 
-    const player = useAudioPlayer('https://res.cloudinary.com/duo8nbu2l/video/upload/v1733314702/x6s3p3elcsvd0wzc8uux.mp3');
+    const player = useAudioPlayer(musica.fileUrl);
+
+    useEffect(() => {
+        playSong()
+    }, [musica])
+
+    useEffect(() => {
+        if (!player) return;
+
+        const interval = setInterval(async () => {
+            if (player.isLoaded) {
+                //setCurrentTime(status.positionMillis / 1000); 
+                const minutosT = (player.duration / 1000) / 60;
+                const MinutosTMin = minutosT - (minutosT - Math.floor(minutosT))
+                const minutosTSeg = Math.round((minutosT - Math.floor(minutosT)) * 1000) / 1000
+                const segundosT = minutosTSeg * 60
+                console.log(segundosT )
+            }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [player]);
+
+    const pauseSong = async () => {
+        player.pause()
+        setPause(true)
+    }
+
+    const playSong = async () => {
+        player.play()
+        setPause(false)
+    }
+
+    useEffect(() => {
+
+        return () => player.remove();
+    }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.topBar}>
                 <Text style={styles.topBarText}>{album.title}</Text>
             </View>
-            <Pressable onPress={() => router.back()} style={styles.back}>
+            <Pressable onPress={() => { router.back(); player.remove() }} style={styles.back}>
                 <AntDesign name="left" size={26} color="white" />
             </Pressable>
             <ScrollView
@@ -64,15 +105,19 @@ const Musica = () => {
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.line}></View>
-                    <View style={{ flexDirection: 'row', paddingVertical: 12, gap: 12 }}>
-                        <AntDesign name="stepbackward" size={38} color="white" />
-                        <TouchableOpacity onPress={() => { setPause(!pause); player.play() }}>
-                            {pause === false ?
-                                <AntDesign name="pausecircle" size={38} color="white" />
-                                : <AntDesign name="play" size={38} color="white" />
-                            }
-                        </TouchableOpacity>
-                        <AntDesign name="stepforward" size={38} color="white" />
+                    <Text style={{ color: 'white' }}>{duracao}</Text>
+                    <View style={{ flexDirection: 'row', paddingVertical: 12, gap: 30, justifyContent: 'center', alignItems: 'center' }}>
+                        <AntDesign name="stepbackward" size={32} color="white" />
+                        {pause === false ?
+                            <TouchableOpacity onPress={pauseSong}>
+                                <AntDesign name="pausecircle" size={52} color="white" />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity onPress={playSong}>
+                                <AntDesign name="play" size={52} color="white" />
+                            </TouchableOpacity>
+                        }
+                        <AntDesign name="stepforward" size={32} color="white" />
                     </View>
                 </View>
             </ScrollView>
@@ -92,7 +137,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        backgroundColor: "transparent",
         justifyContent: "center",
         alignItems: "center",
         zIndex: 10,
@@ -100,7 +144,6 @@ const styles = StyleSheet.create({
     topBarText: {
         fontSize: 24,
         fontWeight: "bold",
-        textAlign: "center",
         color: 'white'
     },
     back: {
@@ -161,94 +204,10 @@ const styles = StyleSheet.create({
         bottom: 34,
         zIndex: 10
     },
-    play: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 14
-    },
-    artistaInfo: {
-        flexDirection: 'row',
-        gap: 6,
-        marginBottom: 3
-    },
-    artistaImage: {
-        width: 20,
-        height: 20,
-        borderRadius: 100
-    },
-    artistaNome: {
-        color: 'white'
-    },
-    albumInfo: {
-        fontSize: 12,
-        color: 'rgba(255,255,255,0.7)'
-    },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginLeft: 10,
-        marginVertical: 10,
-        color: 'white'
-    },
-    listContainer: {
-        paddingLeft: 10,
-    },
-    item: {
-        padding: 6,
-        marginRight: 10,
-        borderRadius: 5,
-        flexDirection: 'row',
-        gap: 8,
-        alignItems: 'center'
-    },
-    itemA: {
-        padding: 4,
-        borderRadius: 4,
-        gap: 2,
-        alignItems: 'center'
-    },
-    itemText: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: '500'
-    },
-    itemAText: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: '500',
-        width: 120,
-        textAlign: 'left'
-    },
-    itemIndex: {
-        fontSize: 14,
-        color: 'white',
-        fontWeight: '400',
-        width: 16,
-        textAlign: 'center'
-    },
-    itemAYear: {
-        fontSize: 14,
-        color: 'white',
-        fontWeight: '300',
-        width: '100%',
-        textAlign: 'left'
-    },
-    itemAImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 4,
-    },
-    itemCover: {
-        width: 45,
-        height: 45,
-    },
     line: {
         width: '90%',
         height: 2,
         backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 
