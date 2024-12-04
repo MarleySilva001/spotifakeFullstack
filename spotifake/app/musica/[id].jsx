@@ -4,6 +4,7 @@ import { Image, Text, View, StyleSheet, Pressable, ScrollView, TouchableOpacity 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import BottomBar from "../../components/bottomBar";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAudioPlayer } from 'expo-audio';
 
 
 const Musica = () => {
@@ -17,7 +18,7 @@ const Musica = () => {
     useEffect(() => {
         fetch(`http://localhost:8000/musica/${id}`)
             .then((resposta) => resposta.json())
-            .then((dados) => { setMusica(dados); console.log(dados) })
+            .then((dados) => { setMusica(dados); })
             .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
     }, [])
 
@@ -34,6 +35,7 @@ const Musica = () => {
             .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
     }, [musica])
 
+    const player = useAudioPlayer('https://res.cloudinary.com/duo8nbu2l/video/upload/v1733314702/x6s3p3elcsvd0wzc8uux.mp3');
 
     return (
         <View style={styles.container}>
@@ -64,9 +66,11 @@ const Musica = () => {
                     <View style={styles.line}></View>
                     <View style={{ flexDirection: 'row', paddingVertical: 12, gap: 12 }}>
                         <AntDesign name="stepbackward" size={38} color="white" />
-                        <TouchableOpacity onPress={() => setPause(!pause)}>
-                            {pause === false ? <AntDesign name="pausecircle" size={38} color="white" />
-                                : <AntDesign name="play" size={38} color="white" />}
+                        <TouchableOpacity onPress={() => { setPause(!pause); player.play() }}>
+                            {pause === false ?
+                                <AntDesign name="pausecircle" size={38} color="white" />
+                                : <AntDesign name="play" size={38} color="white" />
+                            }
                         </TouchableOpacity>
                         <AntDesign name="stepforward" size={38} color="white" />
                     </View>
