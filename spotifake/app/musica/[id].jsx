@@ -1,94 +1,90 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, Pressable, ScrollView, TouchableOpacity } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import BottomBar from "../../components/bottomBar";
 import { LinearGradient } from "expo-linear-gradient";
-import { useAudioPlayer } from 'expo-audio';
-
+import { usePlayer } from "../../scripts/SongContext";
 
 const Musica = () => {
     const { id } = useLocalSearchParams();
-    const [album, setAlbum] = useState([])
-    const [musica, setMusica] = useState([])
-    const [artista, setArtista] = useState([])
-    const router = useRouter()
-    const [pause, setPause] = useState(false)
-    const [duracao, setDuracao] = useState(null)
-    const [currentTime, setCurrentTime] = useState(0);
+    const { isPlaying, playSong, pauseSong, resumeSong, stopSong, duration, position } = usePlayer();
+    const [album, setAlbum] = useState([]);
+    const [musica, setMusica] = useState([]);
+    const [artista, setArtista] = useState([]);
+    const [progresso, setProgresso] = useState(0);
+    const [duracao, setDuracao] = useState(0)
+    const [loop, setLoop] = useState(false);
+    const [like, setLike] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        fetch(`http://localhost:8000/musica/${id}`)
-            .then((resposta) => resposta.json())
-            .then((dados) => { setMusica(dados); })
-            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
-    }, [])
+        const fetchMusica = async () => {
+            try {
+                const resposta = await fetch(`http://localhost:8000/musica/${id}`);
+                const dados = await resposta.json();
+                setMusica(dados);
+                await playSong(dados);
+                const minutos = Math.floor(dados.duracao / 60)
+                const segundos = dados.duracao % 60
+                const duracaoT = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+                setDuracao(duracaoT)
+            } catch (error) {
+                console.log('Aconteceu um erro ao buscar os dados.');
+            }
+        };
+
+        fetchMusica();
+    }, [id]);
 
     useEffect(() => {
         if (musica.album_id) {
             fetch(`http://localhost:8000/album/${musica.album_id}`)
-                .then((resposta) => resposta.json())
-                .then((dados) => { setAlbum(dados) })
+                .then(resposta => resposta.json())
+                .then(dados => setAlbum(dados))
                 .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
         }
-    }, [musica.album_id])
+    }, [musica.album_id]);
+
     useEffect(() => {
         if (musica.artista_id) {
             fetch(`http://localhost:8000/artista/${musica.artista_id}`)
-                .then((resposta) => resposta.json())
-                .then((dados) => { setArtista(dados) })
+                .then(resposta => resposta.json())
+                .then(dados => setArtista(dados))
                 .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
         }
-    }, [musica])
-
-    const player = useAudioPlayer(musica.fileUrl);
+    }, [musica.artista_id]);
 
     useEffect(() => {
-        playSong()
-    }, [musica])
+        const progressoAtual = (position / (musica.duracao * 1000)) * 100; // Calcule o progresso como porcentagem
+        setProgresso(progressoAtual);
+    }, [position, duration]);
 
-    useEffect(() => {
-        if (!player) return;
+    const formatTime = (millis) => {
+        const totalSeconds = Math.floor(millis / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
 
-        const interval = setInterval(async () => {
-            if (player.isLoaded) {
-                //setCurrentTime(status.positionMillis / 1000); 
-                const minutosT = (player.duration / 1000) / 60;
-                const MinutosTMin = minutosT - (minutosT - Math.floor(minutosT))
-                const minutosTSeg = Math.round((minutosT - Math.floor(minutosT)) * 1000) / 1000
-                const segundosT = minutosTSeg * 60
-                console.log(segundosT )
-            }
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [player]);
+    const loopSong = () => {
+        setLoop(!loop);
+    };
 
-    const pauseSong = async () => {
-        player.pause()
-        setPause(true)
-    }
-
-    const playSong = async () => {
-        player.play()
-        setPause(false)
-    }
-
-    useEffect(() => {
-
-        return () => player.remove();
-    }, []);
+    const likeSong = () => {
+        setLike(!like);
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.topBar}>
                 <Text style={styles.topBarText}>{album.title}</Text>
             </View>
-            <Pressable onPress={() => { router.back(); player.remove() }} style={styles.back}>
+            <Pressable onPress={() => { router.back(); }} style={styles.back}>
                 <AntDesign name="left" size={26} color="white" />
             </Pressable>
             <ScrollView
                 style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.topImage}>
@@ -104,20 +100,48 @@ const Musica = () => {
                     />
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={styles.line}></View>
-                    <Text style={{ color: 'white' }}>{duracao}</Text>
+                    <Pressable style={styles.lineContainer} >
+                        <View style={[styles.line, { width: `${progresso}%` }]}></View>
+                    </Pressable>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '90%', marginTop: 4 }}>
+                        <Text style={{ color: 'white' }}>{formatTime(position)}</Text>
+                        <Text style={{ color: 'white' }}>{duracao ? duracao : '00:00'}</Text>
+                    </View>
+
                     <View style={{ flexDirection: 'row', paddingVertical: 12, gap: 30, justifyContent: 'center', alignItems: 'center' }}>
-                        <AntDesign name="stepbackward" size={32} color="white" />
-                        {pause === false ?
+                        {like ? (
+                            <TouchableOpacity onPress={likeSong}>
+                                <AntDesign name="heart" size={22} color="#FF3F58" />
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={likeSong}>
+                                <AntDesign name="hearto" size={22} color="white" />
+                            </TouchableOpacity>
+                        )}
+                        <TouchableOpacity onPress={() => router.push(`musica/${id - 1}`)}>
+                            <AntDesign name="stepbackward" size={32} color="white" />
+                        </TouchableOpacity>
+                        {isPlaying ? (
                             <TouchableOpacity onPress={pauseSong}>
                                 <AntDesign name="pausecircle" size={52} color="white" />
                             </TouchableOpacity>
-                            :
-                            <TouchableOpacity onPress={playSong}>
+                        ) : (
+                            <TouchableOpacity onPress={resumeSong}>
                                 <AntDesign name="play" size={52} color="white" />
                             </TouchableOpacity>
-                        }
-                        <AntDesign name="stepforward" size={32} color="white" />
+                        )}
+                        <TouchableOpacity onPress={() => router.push(`musica/${Number(id) + 1}`)}>
+                            <AntDesign name="stepforward" size={32} color="white" />
+                        </TouchableOpacity>
+                        {loop ? (
+                            <TouchableOpacity onPress={loopSong}>
+                                <AntDesign name="sync" size={22} color="white" />
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={loopSong}>
+                                <AntDesign name="sync" size={22} color="#B7B7B7" />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
             </ScrollView>
@@ -154,10 +178,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         marginTop: 0,
-        paddingBottom: 90
-    },
-    scrollContent: {
-        paddingBottom: 20,
+        paddingBottom: 70
     },
     topImage: {
         height: 475,
@@ -180,9 +201,8 @@ const styles = StyleSheet.create({
     },
     albumName: {
         position: 'absolute',
-        fontSize: 20,
+        fontSize: 18,
         width: '100%',
-        fontWeight: "bold",
         textAlign: 'left',
         paddingHorizontal: 12,
         lineHeight: 48,
@@ -193,7 +213,7 @@ const styles = StyleSheet.create({
     },
     albumMusica: {
         position: 'absolute',
-        fontSize: 24,
+        fontSize: 22,
         width: '100%',
         fontWeight: "bold",
         textAlign: 'left',
@@ -201,14 +221,20 @@ const styles = StyleSheet.create({
         lineHeight: 48,
         marginVertical: 10,
         color: 'white',
-        bottom: 34,
+        bottom: 30,
         zIndex: 10
     },
-    line: {
+    lineContainer: {
         width: '90%',
         height: 2,
+        backgroundColor: '#B7B7B7',
+        overflow: 'hidden',
+        borderRadius: 2,
+    },
+    line: {
+        height: '100%',
         backgroundColor: 'white',
-    }
+    },
 });
 
 export default Musica;

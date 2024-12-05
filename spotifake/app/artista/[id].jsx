@@ -114,7 +114,7 @@ const Artista = () => {
                 <View style={styles.bioContainer}>
                     <Text style={styles.sectionTitle}>Sobre</Text>
                     <Text style={styles.bioText}>
-                        {artista.bio}.
+                        {artista.bio}
                     </Text>
                 </View>
             </Animated.ScrollView>
